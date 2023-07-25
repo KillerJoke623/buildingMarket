@@ -1,13 +1,32 @@
 package com.auto.data.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
-public class Cars {
+public class Model {
     @Id
-    private Long car_id;
-    private String manufacturer_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
+    private Long model_id;
+    private String model_name;
+
+
     private Integer generation;
+
+
+
+    @ManyToOne
+    @JoinColumn(name = "manufacturer_manufacturer_id")
+    private Manufacturers manufacturer;
+
+
 
 }

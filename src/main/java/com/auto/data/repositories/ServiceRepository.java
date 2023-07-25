@@ -1,4 +1,4 @@
-package com.auto.data.repositiroes;
+package com.auto.data.repositories;
 
 import com.auto.data.models.Service;
 import org.springframework.data.jpa.repository.JpaRepository;
