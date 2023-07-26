@@ -36,6 +36,14 @@ public class WebSecurityConfig{
     @Autowired
     private UserDetailsServiceImpl userDetailsServiceImpl;
 
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
+
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
+
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -51,7 +59,7 @@ public class WebSecurityConfig{
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .requestMatchers("/", "/registration", "/css/**", "/js/**")
+                .requestMatchers("/", "/registration", "/css/**", "/js/**", "/login", "/registration-success", "/registration/registration-success", "/register")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()

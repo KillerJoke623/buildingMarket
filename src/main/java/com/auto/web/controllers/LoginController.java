@@ -4,10 +4,12 @@ import com.auto.data.models.Users;
 import com.auto.data.services.UserService;
 import com.auto.web.configurations.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ public class LoginController {
     //!TODO Resolve endless redirecting to /login (ERR_TOO_MANY_REDIRECTS)
     @Autowired
     private final UserDetailsServiceImpl userDetailsService;
+
 
     @Autowired
     private final AuthenticationManager authenticationManager;
