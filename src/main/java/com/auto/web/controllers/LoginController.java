@@ -20,20 +20,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class LoginController {
     //!TODO Resolve endless redirecting to /login (ERR_TOO_MANY_REDIRECTS)
-    @Autowired
+
     private final UserDetailsServiceImpl userDetailsService;
 
-    @Autowired
+
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
+
     private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public LoginController(UserDetailsServiceImpl userDetailsService, AuthenticationManager authenticationManager) {
+    public LoginController(UserDetailsServiceImpl userDetailsService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
         this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
     }
+
+
 
     @GetMapping("/login")
     public String showLoginForm(Model model) {
@@ -45,22 +48,28 @@ public class LoginController {
     public String processLogin(@ModelAttribute("user") Users user, Model model) {
         // Проверяем, существует ли пользователь с таким email в базе данных
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
-        if (userDetails == null) {
+        if (userDetails != null && passwordEncoder.matches(passwordEncoder.encode(user.getPassword()), userDetails.getPassword())) {
+            boolean isthisright = passwordEncoder.matches(passwordEncoder.encode(user.getPassword()), userDetails.getPassword());
+            // Если пользователь найден, пытаемся аутентифицировать его
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            user.getEmail(),
+                            passwordEncoder.encode(user.getPassword())
+                    )
+            );
+            if (authentication.isAuthenticated()) {
+                return "redirect:/services";
+            }
+        }
+        else {
             model.addAttribute("errorMessage", "Неверный email или пароль.");
             return "login";
         }
-        // Если пользователь найден, пытаемся аутентифицировать его
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        user.getEmail(),
-                        passwordEncoder.encode(user.getPassword())
-                )
-        );
 
-        // Если аутентификация прошла успешно, перенаправляем пользователя на главную страницу
-        if (authentication.isAuthenticated()) {
-            return "redirect:/services";
-        }
+//        // Если аутентификация прошла успешно, перенаправляем пользователя на главную страницу
+//        if (authentication.isAuthenticated()) {
+//            return "redirect:/services";
+//        }
 
         // Если аутентификация не удалась, перенаправляем пользователя на форму входа с сообщением об ошибке
         model.addAttribute("errorMessage", "Неверный email или пароль.");
