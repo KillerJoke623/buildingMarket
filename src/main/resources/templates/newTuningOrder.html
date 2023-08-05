@@ -42,21 +42,9 @@
         </div>
     </nav>
 
-    <form action="/tuning-orders" method="post">
+    <form action="" th:action="@{/service/{serviceId}(serviceId=${service.service_id})}" th:object="${tuningOrder}" method="post">
         <input type="text" name="comment" placeholder="Comment">
-        <input type="text" name="licensePlate" placeholder="License Plate">
-        <select name="services ">
-            <option value="">Select Service</option>
-            <list services as service>
-                <option value="${service.id}">${service.name}</option>
-            </list>
-        </select>
-        <select name="services">
-            <option value="">Select Service</option>
-            <list services as service>
-                <option value="${service.id}">${service.name}</option>
-            </list>
-        </select>
+        <input type="hidden" name="service" th:value="${service.service_id}" th:type="number"/>
 
         <input type="submit" value="Create Tuning Order">
     </form>

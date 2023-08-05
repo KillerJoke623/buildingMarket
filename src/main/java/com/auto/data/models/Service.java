@@ -23,4 +23,5 @@ public class Service {
     @ManyToOne
     @JoinColumn(name = "tuning_orders_order_id")
     private TuningOrders tuningOrders;
+
 }
