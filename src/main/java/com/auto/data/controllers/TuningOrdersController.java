@@ -14,7 +14,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.LinkedHashSet;
+
 
 @Controller
 @RequestMapping("/service/{serviceId}")
@@ -34,11 +39,14 @@ public class TuningOrdersController {
         tuningOrder.setUser(userService.getUserByEmail(userName));
         tuningOrder.setDateTime(LocalDateTime.now());
 
-        List<Service> servicesList = new ArrayList<Service>();
+        Set<Service> servicesList = new LinkedHashSet<Service>();
         servicesList.add(service);
+        tuningOrder.setServicess(servicesList);
 
-        tuningOrder.setServices(servicesList);
         tuningOrderService.createTuningOrder(tuningOrder);
+
+//        service.setTuningOrders(tuningOrder);
+//        service.set
 
         return "newTuningOrder";
     }

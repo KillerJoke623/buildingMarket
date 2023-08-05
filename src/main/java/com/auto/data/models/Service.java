@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -20,8 +23,8 @@ public class Service {
     private String service_description;
     private Integer service_price;
 
-    @ManyToOne
-    @JoinColumn(name = "tuning_orders_order_id")
-    private TuningOrders tuningOrders;
+
+    @ManyToMany(mappedBy = "servicess")
+    private Set<TuningOrders> tuningOrderses = new LinkedHashSet<>();
 
 }

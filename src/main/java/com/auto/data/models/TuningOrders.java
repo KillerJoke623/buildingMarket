@@ -8,7 +8,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,11 +34,18 @@ public class TuningOrders {
 
     private LocalDateTime dateTime;
 
-    @OneToMany(mappedBy = "tuningOrders", orphanRemoval = true)
-    private List<Service> services = new ArrayList<>();
+
 
     @OneToMany(mappedBy = "tuningOrders", orphanRemoval = true)
     private List<CarPart> carParts = new ArrayList<>();
+
+
+    @ManyToMany
+    @JoinTable(name = "TuningOrders_services",
+            joinColumns = @JoinColumn(name = "tuningOrders_order_id"),
+            inverseJoinColumns = @JoinColumn(name = "services_service_id"))
+    private Set<Service> servicess = new LinkedHashSet<>();
+
 
 
 }
