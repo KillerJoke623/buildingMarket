@@ -33,6 +33,7 @@ public class TuningOrders {
 
 
     private LocalDateTime dateTime;
+    private String status;
 
 
 

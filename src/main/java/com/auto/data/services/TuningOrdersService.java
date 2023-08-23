@@ -4,6 +4,8 @@ import com.auto.data.models.TuningOrders;
 import com.auto.data.repositories.TuningOrdersRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TuningOrdersService {
 
@@ -14,6 +16,15 @@ public class TuningOrdersService {
     }
 
     public TuningOrders createTuningOrder(TuningOrders tuningOrder) {
+        tuningOrder.setStatus("pending");
         return tuningOrderRepository.save(tuningOrder);
     }
+
+    public void declineOrder(Long id) {
+        TuningOrders tuningOrder = tuningOrderRepository.findById(id).get();
+        tuningOrder.setStatus("declined");
+        tuningOrderRepository.save(tuningOrder);
+    }
+
+
 }

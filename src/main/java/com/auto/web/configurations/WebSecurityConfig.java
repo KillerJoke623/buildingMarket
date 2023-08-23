@@ -28,6 +28,8 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import java.io.IOException;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 
 @Configuration
 @EnableWebSecurity
@@ -54,6 +56,20 @@ public class WebSecurityConfig{
         return new ProviderManager(daoAuthenticationProvider);
     }
 
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeRequests(authorizeRequests -> {
+                    try {
+                        authorizeRequests.anyRequest()
+                                        .authenticated().and().csrf().disable();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .httpBasic(withDefaults())
+                .formLogin(withDefaults());
+        return http.build();
+    }
 
     //!TODO Resolve endless redirecting to /login (ERR_TOO_MANY_REDIRECTS)
     //!TODO Убрать костыль в services
