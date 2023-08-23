@@ -1,13 +1,13 @@
 package com.auto.data.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,4 +24,8 @@ public class Users {
     private String phoneNumber;
     private String address;
     private String roles;
+
+    @OneToMany(mappedBy = "users", orphanRemoval = true)
+    private List<Car> cars = new ArrayList<>();
+
 }

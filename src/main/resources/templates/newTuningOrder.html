@@ -9,7 +9,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="">Авто Тюнинг Ателье</a>
+            <a class="navbar-brand" href="http://localhost:8080">Авто Тюнинг Ателье</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -17,7 +17,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="">Главная</a>
+                        <a class="nav-link" href="http://localhost:8080">Главная</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/services">Услуги</a>
@@ -66,7 +66,60 @@
     <form action="" th:action="@{/service/{serviceId}(serviceId=${service.service_id})}" th:object="${tuningOrder}" method="post">
         <input type="text" name="comment" placeholder="Comment">
         <input type="hidden" name="service" th:value="${service.service_id}" th:type="number"/>
+        <select name="manufacturers" id="manufacturers">
+            <option value="">-- Select Manufacturer --</option>
+            <option th:each="manufacturer : ${manufacturers}" th:value="${manufacturer.manufacturer_id}" th:text="${manufacturer.manufacturer}">
+            </option>
+        </select>
+        <select name="models" id="models">
+            <option value="">-- Select Model --</option>
+            <script>
+                function getModelsByManufacturer(manufacturerId, callback) {
+                    // Get the database connection.
+                    var connection = new XMLHttpRequest();
+                    connection.open("GET", "/api/models/manufacturer/" + manufacturerId);
+                    connection.responseType = "";
+                    connection.send();
 
+                    // Wait for the response from the database.
+                    connection.onload = function() {
+                        // Get the models from the response.
+                        var models = JSON.parse(connection.responseText);
+                        console.log(models);
+                        // Return the models.
+                        callback(models.values);
+                    };
+                }
+            </script>
+            <script>
+                 function filterModelsByManufacturer(manufacturerId) {
+                    // Get the select element for the models.
+                    var modelsSelect = document.getElementById("models");
+
+                    // Clear the options in the select element.
+                    modelsSelect.innerHTML = "";
+
+                    // Get the models for the specified manufacturer.
+                     getModelsByManufacturer(manufacturerId, function(models) {
+                         // Add the models to the select element.
+                         for (var i = 0; i < models.length; i++) {
+                             var option = document.createElement("option");
+                             option.value = models[i].nameValuePairs.model_id;
+                             option.text = models[i].nameValuePairs.model_name;
+                             modelsSelect.appendChild(option);
+                         }
+                     });
+                }
+            </script>
+            <script>
+                // Bind the filterModelsByManufacturer function to the change event of the manufacturers select element.
+                document.getElementById("manufacturers").addEventListener("change", function() {
+                    console.log(this.options[this.selectedIndex].value);
+                    filterModelsByManufacturer(this.options[this.selectedIndex].value);
+
+                });
+            </script>
+        </select>
         <input type="submit" value="Create Tuning Order">
     </form>
 

@@ -44,8 +44,6 @@ public class WebSecurityConfig{
         return new BCryptPasswordEncoder();
     }
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
 
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
