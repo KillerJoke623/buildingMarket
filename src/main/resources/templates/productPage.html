@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <title>Title</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="http://localhost:8080">Строймаркет</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="http://localhost:8080">Главная</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/products">Материалы</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">О нас</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Контакты</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/registration">Регистрация</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Вход</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/account">Личный кабинет</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<select name="categories" id="categories">
+  <option value="9999">-- Select Category --</option>
+  <option th:each="category : ${categories}" th:value="${category.category_id}" th:text="${category.category}">
+  </option>
+</select>
+
+
+<section class="container mt-5">
+  <div class="row">
+    <!-- Продукты будут отображаться здесь -->
+    <div class="col-md-6 mb-4 flex-row" id="productList" style="flex-direction: row;">
+
+    </div>
+
+  </div>
+</section>
+
+<script>
+  function getModelsByManufacturer(categorieId, callback) {
+    // Get the database connection.
+    var connection = new XMLHttpRequest();
+    connection.open("GET", "/api/products/categorie/" + categorieId);
+    connection.responseType = "";
+    connection.send();
+
+    // Wait for the response from the database.
+    connection.onload = function() {
+      // Get the products from the response.
+      var products = JSON.parse(connection.responseText);
+      console.log(products);
+      // Return the products.
+      callback(products.values);
+    };
+  }
+</script>
+<script>
+  function filterProductsByCategorie(categorieId) {
+
+    // Get the products for the specified categorie.
+    getModelsByManufacturer(categorieId, function(products) {
+      // Add the products to the select element.
+      var section = document.getElementById("productList");
+      section.innerHTML = "";
+
+
+      for (var i = 0; i < products.length; i++) {
+        var product = products[i].nameValuePairs;
+
+        // Create a card for the product.
+        var card = document.createElement("div");
+        card.classList.add("card", "text-center");
+
+        // Add the product image to the card.
+        var image = document.createElement("img");
+        image.classList.add("card-img-top");
+        image.src = "/images/" + product.product_id + ".jpg";
+        image.alt = "Услуга 1";
+        card.appendChild(image);
+
+        // Create the card body.
+        var cardBody = document.createElement("div");
+        cardBody.classList.add("card-body");
+
+        // Add the product name to the card body.
+        var title = document.createElement("h5");
+        title.classList.add("card-title");
+        title.textContent = product.product_name;
+        cardBody.appendChild(title);
+
+        // Add the product description to the card body.
+        var description = document.createElement("p");
+        description.classList.add("card-text");
+        description.textContent = product.product_description;
+        cardBody.appendChild(description);
+
+        // Add the product price to the card body.
+        var price = document.createElement("a");
+        price.classList.add("btn", "btn-warning");
+        price.href = "/product/" + product.product_id;
+        price.textContent = product.product_price + "₽";
+        cardBody.appendChild(price);
+
+        card.appendChild(cardBody);
+
+        // Add the card to the section.
+        section.appendChild(card);
+
+      }
+    });
+  }
+</script>
+<script>
+  // Bind the filterModelsBy function to the change event of the categories select element.
+  document.getElementById("categories").addEventListener("change", function() {
+    console.log(this.options[this.selectedIndex].value);
+    filterProductsByCategorie(this.options[this.selectedIndex].value);
+
+  });
+</script>
+
+<!--<section class="container mt-5">-->
+<!--  <div class="row">-->
+<!--    <div class="col-md-6 mb-4" th:each="product : ${products}">-->
+<!--      -->
+<!--    </div>-->
+<!--  </div>-->
+<!--</section>-->
+
+
+<footer class="footer bg-dark text-white text-center py-3">
+  <div class="container">
+    <p>&copy; 2023 Цифровая платформа Строймаркет. Все права защищены.</p>
+  </div>
+</footer>
+
+<script th:src="@{https://code.jquery.com/jquery-3.5.1.slim.min.js}"></script>
+<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
+
+
+</body>
+</html>

@@ -17,7 +17,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class TuningOrders {
+public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long order_id;
@@ -26,9 +26,7 @@ public class TuningOrders {
     private Users user;
 
     private String comment;
-    @ManyToOne
-    @JoinColumn(name = "car_car_id")
-    private Car car;
+
 
 
 
@@ -36,17 +34,13 @@ public class TuningOrders {
     private String status;
 
 
-
-    @OneToMany(mappedBy = "tuningOrders", orphanRemoval = true)
-    private List<CarPart> carParts = new ArrayList<>();
-
-
     @ManyToMany
-    @JoinTable(name = "TuningOrders_services",
+    @JoinTable(name = "Orders_products",
             joinColumns = @JoinColumn(name = "tuningOrders_order_id"),
-            inverseJoinColumns = @JoinColumn(name = "services_service_id"))
-    private Set<Service> servicess = new LinkedHashSet<>();
+            inverseJoinColumns = @JoinColumn(name = "products_product_id"))
+    private Set<Product> products = new LinkedHashSet<>();
 
-
+    @OneToMany(mappedBy = "order", orphanRemoval = true)
+    private Set<OrderItem> orderItems = new LinkedHashSet<>();
 
 }

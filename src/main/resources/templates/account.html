@@ -7,9 +7,9 @@
 </head>
 <body>
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-      <a class="navbar-brand" href="http://localhost:8080">Авто Тюнинг Ателье</a>
+      <a class="navbar-brand" href="http://localhost:8080">Строймаркет</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
               aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -20,7 +20,7 @@
             <a class="nav-link" href="http://localhost:8080">Главная</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/services">Услуги</a>
+            <a class="nav-link" href="/products">Материалы</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">О нас</a>
@@ -30,9 +30,6 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/registration">Регистрация</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link">|</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/login">Вход</a>
@@ -45,25 +42,21 @@
 
 
   <div class="container">
-    <h1>Your Account</h1>
+    <h1>Ваш аккаунт</h1>
 
     <ul class="list-group">
       <li class="list-group-item">
-        <h2>Name:</h2>
+        <h2>Имя:</h2>
         <p th:text="${user.getName()}"></p>
       </li>
       <li class="list-group-item">
         <h2>Email:</h2>
         <p th:text="${user.getEmail()}">{{ user.email }}</p>
       </li>
-      <li class="list-group-item">
-        <h2>Cars:</h2>
-        <ul class="list-unstyled">
-          <li th:each="car : ${user.getCars()}">
-            <p th:text="| ${car.getManufacturers().manufacturer} ${car.getModel().model_name} |"></p>
-          </li>
-        </ul>
 
+      <li class="list-group-item">
+        <h2>Адрес:</h2>
+        <p th:text="${user.getAddress()}"></p>
       </li>
 
 
@@ -72,15 +65,16 @@
         <ul class="list-unstyled">
           <li th:each="order : ${orders}">
             <h3 th:text="${#temporals.format(order.getDateTime(), 'dd-MM-yyyy HH:mm')}"></h3>
-            <h5 th:if="${order.getCar() != null}" th:text="| ${order.getCar().getManufacturers().manufacturer} ${order.getCar().getModel().model_name} |"></h5>
+<!--            <h5 th:if="${order.getCar() != null}" th:text="| ${order.getCar().getManufacturers().manufacturer} ${order.getCar().getModel().model_name} |"></h5>-->
             <h5 th:if="${order.getComment() != null}" th:text="${order.getComment()}"></h5>
             <h4 th:if="${order.getStatus() != null}" th:text="${order.getStatus()}"></h4>
             <ul class="list-unstyled">
-              <li th:each="service : ${order.getServicess()}">
-                <p th:text="| ${service.getService_name()} ${service.getService_price()} |"></p>
+              <li th:each="item : ${order.getOrderItems()}">
+                <p th:text="| ${item.getProduct().getProduct_name()} ${item.getQuantity()} x ${item.getProduct().getProduct_price()} |"></p>
+                <p th:text="| ${item.getQuantity()*item.getProduct().getProduct_price()} рублей |"></p>
               </li>
             </ul>
-            <button class="btn btn-danger"  th:value="${order}" th:with="order=${order}" th:onclick="| declineOrder(${order.order_id}) |">Decline</button>
+            <button class="btn btn-danger"  th:value="${order}" th:with="order=${order}" th:onclick="| declineOrder(${order.order_id}) |">Отклонить заказ</button>
 
           </li>
         </ul>
@@ -113,8 +107,7 @@
         declineOrderRequest.send();
 
 
-        // Redirect to the orders page.
-        //window.location.href = "/account";
+
       }
     </script>
   </div>
@@ -124,7 +117,7 @@
 
   <footer class="footer bg-dark text-white text-center py-3">
     <div class="container">
-      <p>&copy; 2023 Цифровая платформа автомобильного тюнинг ателье. Все права защищены.</p>
+      <p>&copy; 2023 Цифровая платформа Строймаркет. Все права защищены.</p>
     </div>
   </footer>
 

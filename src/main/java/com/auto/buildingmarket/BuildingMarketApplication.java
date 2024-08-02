@@ -1,4 +1,4 @@
-package com.auto.autotuningshop;
+package com.auto.buildingmarket;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,10 +8,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication(scanBasePackages="com.auto")
 @EntityScan("com.auto.data.models")
 @EnableJpaRepositories("com.auto.data.repositories")
-public class AutoTuningShopApplication {
+public class BuildingMarketApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AutoTuningShopApplication.class, args);
+		SpringApplication.run(BuildingMarketApplication.class, args);
 	}
 
 }

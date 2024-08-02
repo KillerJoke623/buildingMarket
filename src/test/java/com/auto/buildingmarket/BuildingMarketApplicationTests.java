@@ -1,10 +1,10 @@
-package com.auto.autotuningshop;
+package com.auto.buildingmarket;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AutoTuningShopApplicationTests {
+class BuildingMarketApplicationTests {
 
 	@Test
 	void contextLoads() {

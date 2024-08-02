@@ -6,27 +6,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-public class Model {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
-    private Long model_id;
-    private String model_name;
+    private Integer category_id;
+    private String category;
 
-
-    private Integer generation;
-
-
-
-    @ManyToOne
-    @JoinColumn(name = "manufacturer_manufacturer_id")
-    private Manufacturers manufacturer;
-
-
+    @OneToMany(mappedBy = "category", orphanRemoval = true)
+    private List<Product> products = new ArrayList<>();
 
 }

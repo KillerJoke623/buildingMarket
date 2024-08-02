@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.auto</groupId>
-	<artifactId>autoTuningShop</artifactId>
+	<artifactId>buildingMarket</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>autoTuningShop</name>
 	<description>autoTuningShop</description>

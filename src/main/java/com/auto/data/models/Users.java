@@ -25,7 +25,6 @@ public class Users {
     private String address;
     private String roles;
 
-    @OneToMany(mappedBy = "users", orphanRemoval = true)
-    private List<Car> cars = new ArrayList<>();
+
 
 }

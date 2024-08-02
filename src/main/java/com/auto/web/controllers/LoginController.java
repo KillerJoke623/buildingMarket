@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class LoginController {
-    //!TODO Resolve endless redirecting to /login (ERR_TOO_MANY_REDIRECTS)
+
 
     private final UserDetailsServiceImpl userDetailsService;
 
@@ -66,10 +66,6 @@ public class LoginController {
             return "login";
         }
 
-//        // Если аутентификация прошла успешно, перенаправляем пользователя на главную страницу
-//        if (authentication.isAuthenticated()) {
-//            return "redirect:/services";
-//        }
 
         // Если аутентификация не удалась, перенаправляем пользователя на форму входа с сообщением об ошибке
         model.addAttribute("errorMessage", "Неверный email или пароль.");
